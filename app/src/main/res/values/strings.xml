@@ -11,6 +11,7 @@
     <string name="oito">8</string>
     <string name="nove">9</string>
     <string name="virgula">,</string>
+    <string name="sinal">+/-</string>
     <string name="apagar">C</string>
     <string name="adicao">+</string>
     <string name="subtracao">-</string>
