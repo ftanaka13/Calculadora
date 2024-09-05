@@ -1,5 +1,6 @@
 package br.com.faculdadeimpacta.calculadora
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,10 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val sharedPreference = this.getSharedPreferences("br.com.faculdadeimpacta.calculadora.prefs", Context.MODE_PRIVATE)
+        val valorInicial = sharedPreference.getFloat("valorInicial", 0F)
+        binding.textViewLinhaInferior.text = valorInicial.toString().replace(".", ",")
 
         var operador = ""
         fun digitaNumero(valor: Int) {
@@ -101,6 +106,16 @@ class MainActivity : AppCompatActivity() {
             }
 
             val resultado = calcularResultado(operando1, operando2, lambda)
+
+            with(sharedPreference.edit()) {
+                putFloat("valorInicial", resultado.toFloat())
+                apply()
+            }
+
+            val editor = sharedPreference.edit()
+            editor.putFloat("valorInicial", resultado.toFloat())
+            editor.apply()
+
             binding.textViewLinhaInferior.text = resultado.toString().replace(".", ",")
             operador = ""
         }
