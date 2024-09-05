@@ -65,15 +65,16 @@ class MainActivity : AppCompatActivity() {
             }
 
             var textoLinhaInferior = binding.textViewLinhaInferior.text.toString()
-            binding.textViewLinhaSuperior.text = "${textoLinhaInferior} ${operacao}"
+            textoLinhaInferior = "$textoLinhaInferior $operacao"
+            binding.textViewLinhaSuperior.text = textoLinhaInferior
             binding.textViewLinhaInferior.text = "0"
             operador = ""
         }
 
-        var adicao = { a: Double, b: Double -> a + b }
-        var subtracao = { a: Double, b: Double -> a - b }
-        var multiplicacao = { a: Double, b: Double -> a * b }
-        var divisao = { a: Double, b: Double -> a / b }
+        val adicao = { a: Double, b: Double -> a + b }
+        val subtracao = { a: Double, b: Double -> a - b }
+        val multiplicacao = { a: Double, b: Double -> a * b }
+        val divisao = { a: Double, b: Double -> a / b }
 
         fun calcularResultado(a: Double, b: Double, operacao: (Double, Double) -> Double): Double {
             return operacao(a, b)
@@ -82,25 +83,24 @@ class MainActivity : AppCompatActivity() {
         fun resultado() {
             var textoLinhaSuperior = binding.textViewLinhaSuperior.text.toString()
             if (textoLinhaSuperior.isEmpty()) return
-            var tokens = textoLinhaSuperior.split(" ")
-            var operando1 = tokens[0].replace(",", ".").toDouble()
-            var operacao = tokens[1]
-            var operando2 =
+            val tokens = textoLinhaSuperior.split(" ")
+            val operando1 = tokens[0].replace(",", ".").toDouble()
+            val operacao = tokens[1]
+            val operando2 =
                 binding.textViewLinhaInferior.text.toString().replace(",", ".").toDouble()
+            textoLinhaSuperior = "${operando1.toString().replace(".", ",")} ${operacao} ${
+                operando2.toString().replace(".", ",")
+            } = "
+            binding.textViewLinhaSuperior.text = textoLinhaSuperior
 
-            binding.textViewLinhaSuperior.text =
-                "${operando1.toString().replace(".", ",")} ${operacao} ${
-                    operando2.toString().replace(".", ",")
-                } = "
-
-            var lambda = when (operacao) {
+            val lambda = when (operacao) {
                 "+" -> adicao
                 "-" -> subtracao
                 "*" -> multiplicacao
                 else -> divisao
             }
 
-            var resultado = calcularResultado(operando1, operando2, lambda)
+            val resultado = calcularResultado(operando1, operando2, lambda)
             binding.textViewLinhaInferior.text = resultado.toString().replace(".", ",")
             operador = ""
         }
